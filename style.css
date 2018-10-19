@@ -4,7 +4,7 @@
   .filter .all-button {
     margin: 0 auto;
     width: 50%; }
-    .filter .all-button button {
-      margin-left: 20px; }
+    .filter .all-button #inputGroupSelect04 {
+      margin-top: 20px; }
 
 /*# sourceMappingURL=style.css.map */
