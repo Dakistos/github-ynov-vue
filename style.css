@@ -1,0 +1,10 @@
+.filter {
+  margin: 20px auto 50px;
+  width: 60%; }
+  .filter .all-button {
+    margin: 0 auto;
+    width: 50%; }
+    .filter .all-button button {
+      margin-left: 20px; }
+
+/*# sourceMappingURL=style.css.map */
