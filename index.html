@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Github Ynov</title>
@@ -10,44 +10,32 @@
 
     <div class="filter">
         <div class="all-button">
-            <button type="button" class="btn btn-dark">Choix projet</button>
-            <button type="button" class="btn btn-dark">Choix période</button>
-            <button type="button" class="btn btn-dark">Choix compte</button>
+            <select class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                <option selected>Choisir projet</option>
+                <option value="1">github-ynov-vue</option>
+            </select>
+            <select class="custom-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                <option selected>Choisir compte</option>
+                <option value="1"></option>
+            </select>
         </div>
     </div>
 
     <div class="container" id="app">
-
-        <div class="row">
-            <div class="col-sm">
-                <ul>
-                    <li v-for="record in commits">
-                        <a :href="record.html_url" target="_blank" class="commit">{{ record.sha.slice(0, 7) }}</a>
-                        - <span class="message">{{ record.commit.message | truncate }}</span><br>
-                        by <span class="author"><a :href="record.author.html_url" target="_blank">{{ record.commit.author.name }}</a></span>
-                        at <span class="date">{{ record.commit.author.date | formatDate }}</span>
-                    </li>
-                </ul>
+            <div class="card" v-for="user in listeUtilisateur">
+                <h5 class="card-header">Auteur : {{user.owner.login}}</h5>
+                <div class="card-body" v-for="projet in projects">
+                    <h5 class="card-title">Projet : {{projet}}</h5>
+                    <a v-bind:href='user.html_url' class="btn btn-primary">Lien Github</a>
+                </div>
             </div>
-            <div class="col-sm">
-                <ul>
-                    <li>Nom :</li>
-                    <li>Lien :</li>
-                </ul>
-            </div>
-            <div class="col-sm">
-                <ul>
-                    <li>Nom :</li>
-                    <li>Lien :</li>
-                </ul>
-            </div>
-        </div>
     </div>
 
     <!--<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>-->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="node_modules/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="index.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
