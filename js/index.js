@@ -1,63 +1,61 @@
-var APIurl = "https://api.github.com/search/repositories?q=github-ynov-vue";
 
 var app = new Vue({
+
     el: '#app',
+
     data: {
-        listeRepo: [],
-        listeUtilisateur: [],
-        projects: ["github-ynov-vue"],
-        selectUser: '',
-        selectProject: ''
+        selectedUser:'',
+        selectedProject:'',
+        projets:[
+            {
+                name:"github-ynov-vue"
+            }
+        ],
+        userList:[],
+        commitList:[],
+        repositoryList: true,
+        repositoryUserSelected: false,
     },
 
-    mounted() {
-        fetch(APIurl, {
+    mounted () {
+
+        fetch("https://api.github.com/search/repositories?q=github-ynov-vue",{
             headers: {
                 "Authorization": "Basic bWFlbDYxOmE3dzFzNWU5YzM="
             },
             method: "GET"
         })
-            .then(response => response.json())
-            .then(data => {
-                this.listeUtilisateur = data.items
+            .then(response =>response.json())
+            .then((data) => {
+                this.userList = data.items
+
             })
     },
+    methods:{
+        selectUser() {
+            this.commitList = []
+            this.repositoryList = false;
+            this.repositoryUserSelected = true;
 
-    method:{
-        
+            fetch(this.selectedUser.url + "/commits", {
+                headers: {
+                    "Authorization": "Basic bWFlbDYxOmE3dzFzNWU5YzM="
+                },
+                method: "GET"
+            })
+                .then(response => response.json())
+
+                .then((data) => {
+
+                    data.forEach((res) => {
+                        this.commitList.push(res)
+                    })
+                })
+        }
+
     }
+
+
+
 });
 
-
-// fetchData: function () {
-//     var xhr = new XMLHttpRequest()
-//     var self = this
-//     xhr.open('GET', apiURL + self.currentBranch)
-//     xhr.onload = function () {
-//         self.commits = JSON.parse(xhr.responseText)
-//         console.log(self.commits[0].html_url)
-//     }
-//     xhr.send()
-// }
-// mounted (){
-//     axios.get(
-//          APIurl,
-//         {headers: {
-//                 "Authorization" : token
-//             }
-//         }
-//     )
-//         .then( response => {
-//                 this.info = response.data;
-//             },
-//             (error) => {
-//                 var status = error.response.status
-//             }
-//         );
-// }
-// ,
-    // filters: {
-    //     currencydecimal (value) {
-    //         return value.toFixed(2)
-    //     }
-    // },
