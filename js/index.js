@@ -1,4 +1,3 @@
-
 var app = new Vue({
 
     el: '#app',
@@ -6,7 +5,7 @@ var app = new Vue({
     data: {
         selectedUser:'',
         selectedProject:'',
-        projets:[
+        projects:[
             {
                 name:"github-ynov-vue"
             }
@@ -15,47 +14,47 @@ var app = new Vue({
         commitList:[],
         repositoryList: true,
         repositoryUserSelected: false,
+        startDate: '',
+        endDate: ''
+
+        // urlList: [],
+        // repoList: [],
     },
 
     mounted () {
-
-        fetch("https://api.github.com/search/repositories?q=github-ynov-vue",{
-            headers: {
-                "Authorization": "Basic bWFlbDYxOmE3dzFzNWU5YzM="
-            },
-            method: "GET"
-        })
-            .then(response =>response.json())
-            .then((data) => {
-                this.userList = data.items
-
-            })
+        this.commitList = [];
+        this.userList = [];
+        axios.defaults.headers.common['Authorization'] = "Basic bWFlbDYxOmE3dzFzNWU5YzM=";
+        axios({method: "GET", "url" : "https://api.github.com/search/repositories?q=github-ynov-vue" })
+            .then((result) => {
+                    this.userList = result.data.items
+                })
     },
     methods:{
         selectUser() {
             this.commitList = []
-            this.repositoryList = false;
-            this.repositoryUserSelected = true;
 
-            fetch(this.selectedUser.url + "/commits", {
-                headers: {
-                    "Authorization": "Basic bWFlbDYxOmE3dzFzNWU5YzM="
-                },
-                method: "GET"
-            })
-                .then(response => response.json())
+            if(this.selectedUser == "Tous"){
+                this.repositoryList = true;
+                this.repositoryUserSelected = false;
+            } else{
+                    this.getUserInfo();
+                    console.log(this.commitList);
+                }
+            },
 
-                .then((data) => {
+            getUserInfo: function () {
+                this.repositoryList = false;
+                this.repositoryUserSelected = true;
 
-                    data.forEach((res) => {
-                        this.commitList.push(res)
+                // axios.defaults.headers.common['Authorization'] = "Basic bWFlbDYxOmE3dzFzNWU5YzM=";
+                axios({method: "GET", "url" : this.selectedUser.url + "/commits" })
+                    .then((result) => {
+                        result.data.forEach((res) => {
+                            this.commitList.push(res)
+                        })
                     })
-                })
+            }
         }
-
-    }
-
-
-
 });
 

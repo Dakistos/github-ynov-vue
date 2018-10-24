@@ -17,7 +17,7 @@
                     <label class="input-group-text" for="inputGroupSelect01">Projet</label>
                 </div>
                 <select class="custom-select" id="inputGroupSelect01" v-model="selectedProject">
-                    <option v-for="projet in projets" :value="projet.name">{{projet.name}}</option>
+                    <option v-for="projet in projects" :value="projet.name">{{projet.name}}</option>
                 </select>
             </div>
             <div class="input-group mb-3">
@@ -29,17 +29,21 @@
                     <option v-for="user in userList" :value="user">{{user.owner.login}}</option>
                 </select>
             </div>
+            <div class="input-group mb-3" style="margin-bottom: 20px">
+                <input type="date" class="form-control" v-model="startDate" placeholder="Date début">
+                <input type="date" class="form-control" v-model="endDate" placeholder="Date fin">
+            </div>
 
             <button class="btn btn-success" v-on:click="selectUser()">Valider</button>
         </div>
 
         <div class="card" v-if="repositoryList">
-            <div class="card-header" v-for="user in userList">
+            <div class="card-header" v-for="user in userList" v-on:click="selectUser()">
                 <h5>Auteur : {{user.owner.login}}</h5>
-                <a :href="user.html_url" class="btn btn-primary">Lien du projet</a>
+                <a :href="user.html_url" target="_blank" class="btn btn-primary">Lien du projet</a>
             </div>
             <div class="card-body">
-                <h5 class="card-title" v-for="projet in projets">{{projet.name}}</h5>
+                <h5 class="card-title" v-for="projet in projects">{{projet.name}}</h5>
                 <table class="table table-responsive-sm table-striped">
                     <thead>
                     <th style="width: 50%">Message</th>
@@ -55,33 +59,32 @@
             </div>
         </div>
 
-        <div>
             <div class="card" v-if="repositoryUserSelected">
                 <div class="card-header">
                     <h5>Auteur : {{selectedUser.owner.login}}</h5>
-                    <a :href="selectedUser.html_url" class="btn btn-primary">Lien du projet</a>
+                    <a :href="selectedUser.html_url" target="_blank" class="btn btn-primary">Lien du projet</a>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title" v-for="projet in projets">Commits pour : {{projet.name}}</h5>
+                    <h5 class="card-title" v-for="projet in projects">Commits pour : {{projet.name}}</h5>
                     <table class="table table-responsive-sm table-striped">
                         <thead>
-                        <th style="width: 50%">Message</th>
-                        <th style="width: 50%">Date</th>
+                        <th style="width: 40%">Message</th>
+                        <th style="width: 40%">Date</th>
+                        <th style="width: 20%">Lien du commit</th>
                         </thead>
                         <tbody>
                         <tr v-for="commit in commitList">
                             <td>{{commit.commit.message}}</td>
                             <td>{{new Date(commit.commit.committer.date).toLocaleDateString()}}</td>
+                            <td><a :href="commit.html_url" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="35px"></a></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-        </div>
-
     </div>
 
-
-<script src="js/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>
