@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 
-
 <body>
     <div class="container" id="app">
         <div class="filter">
@@ -26,19 +25,18 @@
                 </div>
                 <select class="custom-select" id="inputGroupSelect02" v-model="selectedUser">
                     <option selected>Tous</option>
-                    <option v-for="user in userList" :value="user">{{user.owner.login}}</option>
+                    <option v-for="user in userList" v-bind:value="user">{{user.owner.login}}</option>
                 </select>
             </div>
             <div class="input-group mb-3" style="margin-bottom: 20px">
                 <input type="date" class="form-control" v-model="startDate" placeholder="Date début">
                 <input type="date" class="form-control" v-model="endDate" placeholder="Date fin">
             </div>
-
-            <button class="btn btn-success" v-on:click="selectUser()">Valider</button>
+            <button class="btn btn-success" v-on:click="getRepo()">Valider</button>
         </div>
 
         <div class="card" v-if="repositoryList">
-            <div class="card-header" v-for="user in userList" v-on:click="selectUser()">
+            <div class="card-header" v-for="user in userList">
                 <h5>Auteur : {{user.owner.login}}</h5>
                 <a :href="user.html_url" target="_blank" class="btn btn-primary">Lien du projet</a>
             </div>
@@ -51,8 +49,8 @@
                     </thead>
                     <tbody>
                     <tr v-for="commit in commitList">
-                        <td>{{commit.commit.message}}</td>
-                        <td>{{commit.commit.committer.date}}</td>
+                        <td>{{commit.message}}</td>
+                        <td>{{commit.committer.date | formatDate }}</td>
                     </tr>
                     </tbody>
                 </table>
@@ -60,7 +58,7 @@
         </div>
 
             <div class="card" v-if="repositoryUserSelected">
-                <div class="card-header">
+                <div class="card-header justify-content-between">
                     <h5>Auteur : {{selectedUser.owner.login}}</h5>
                     <a :href="selectedUser.html_url" target="_blank" class="btn btn-primary">Lien du projet</a>
                 </div>
@@ -75,8 +73,8 @@
                         <tbody>
                         <tr v-for="commit in commitList">
                             <td>{{commit.commit.message}}</td>
-                            <td>{{new Date(commit.commit.committer.date).toLocaleDateString()}}</td>
-                            <td><a :href="commit.html_url" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="35px"></a></td>
+                            <td>{{commit.commit.committer.date }}</td>
+                            <td><a :href="commit.html_url" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
                         </tr>
                         </tbody>
                     </table>
@@ -84,6 +82,7 @@
             </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/fr.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="js/index.js"></script>
 </body>
