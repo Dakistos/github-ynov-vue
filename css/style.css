@@ -2,7 +2,9 @@
     margin: 20px auto;
     width: 50%;
 }
-
+.class{
+    margin-bottom: 20px;
+}
 .card-header h5{
     display: inline-block;
     margin-top: 7px;

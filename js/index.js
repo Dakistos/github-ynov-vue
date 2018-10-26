@@ -12,82 +12,153 @@ var app = new Vue({
     el: '#app',
 
     data: {
-        selectedUser:'',
-        selectedProject:'',
-        projects:[
-            {
-                name:"github-ynov-vue"
-            }
+        selectedUser: '',
+        selectedProject: '',
+        projects: ["github-ynov-vue"],
+        userList: [
+            "mathiasLoiret",
+            "Mokui",
+            "etienneYnov",
+            "gfourny",
+            "mael61",
+            "alixnzt",
+            "mcourant",
+            "raphaelCharre",
+            "AlexDesvallees",
+            "ClementCaillaud",
+            "benjaminbra",
+            "Nair0fl",
+            "Killy85",
+            "msaintmartin",
+            "sfongue",
+            "rudy8530",
+            "Dakistos",
+            "Coblestone",
+            "BenoitCochet",
+            "thomaspich",
+            "TeofiloJ",
+            "maximerolland",
+            "LordInateur",
+            "KevinPautonnier",
+            "AntoineGOSSET"
         ],
-        userList:[],
-        commitList:[],
+        commitList: [],
         repositoryList: true,
         repositoryUserSelected: false,
         startDate: '',
-        endDate: ''
-
-        // urlList: [],
-        // repoList: [],
+        endDate: '',
+        repoList: []
     },
 
-    filter: {
-        moment: function (date) {
-            return moment(date).format('MMMM Do YYYY, h:mm:ss a');
-        }
+    // filter: {
+    //     moment: function (date) {
+    //         return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    //     }
+    // },
+
+    mounted() {
+        this.getAllUser();
     },
 
-    mounted () {
-        this.commitList = [];
-        this.userList = [];
-        axios.defaults.headers.common['Authorization'] = "Basic bWFlbDYxOmE3dzFzNWU5YzM=";
-        axios({method: "GET", "url" : "https://api.github.com/search/repositories?q=github-ynov-vue" })
-            .then((result) => {
-                    this.userList = result.data.items
-                })
-    },
-    methods:{
+
+    methods: {
         getRepo() {
-            this.commitList = []
+            if (this.selectedUser == "Tous") {
+                this.getAllUser();
+            } else {
+                this.getUserInfo();
+            }
+        },
 
-            if(this.selectedUser == "Tous"){
-                this.repositoryList = true;
-                this.repositoryUserSelected = false;
+        getAllUser: function () {
+            var dateDebut = this.startDate;
+            var dateFin = this.endDate;
 
 
-            } else{
-                    this.getUserInfo();
-                    console.log(this.commitList);
-                }
-            },
-
-            getUserInfo: function () {
-                this.repositoryList = false;
-                this.repositoryUserSelected = true;
-
-                axios({method: "GET", "url" : this.selectedUser.url + "/commits" })
+            this.projects.forEach((projet) => {
+                axios.defaults.headers.common['Authorization'] = "Basic bWFlbDYxOmE3dzFzNWU5YzM=";
+                axios({method: "GET", "url": "https://api.github.com/search/repositories?q=" + projet})
                     .then((result) => {
-                        result.data.forEach((res) => {
-                            var dateCommit = new Date(res.commit.author.date);
-                            var dateDebut = new Date(this.startDate);
-                            var dateFin = new Date(this.endDate);
-                            // dateDebut.toLocaleDateString('fr-fr');
-                            // dateFin.toLocaleDateString('fr-fr');
-                            // dateCommit.toLocaleDateString('fr-fr');
-
-                            // noinspection JSAnnotator
-                            if(dateCommit.getTime() >= dateDebut.getTime() && dateCommit.getTime() <= dateFin.getTime()){
-                                this.commitList.push(res)
-                                console.log(res.commit.author.date + "///" + this.startDate)
-                            }else if(dateCommit.getTime() >= dateDebut.getTime() && dateFin.getTime() == ""){
-                                this.commitList.push(res)
-                                console.log(res.commit.author.date + "///" + this.startDate)
-                            } else if(dateDebut.getTime() == "" && dateFin.getTime() == ""){
-                                this.commitList.push(res)
-                                console.log(res.commit.author.date + "///" + this.startDate)
+                        //user info
+                        this.repoList = result.data.items
+                        this.repoList.forEach(repo => {
+                            var person = {
+                                login: repo.owner.login,
+                                url: repo.html_url,
+                                commitAll: []
                             }
+                            axios({method: 'GET', url: "https://api.github.com/repos/" + repo.full_name + "/commits"})
+                                .then(response => {
+                                    response.data.forEach(data => {
+                                        //commits
+                                        var commit = {
+                                            dateCommit: data.commit.author.date,
+                                            message: data.commit.message,
+                                            commitUrl: data.html_url
+                                        };
+                                        if(dateDebut <= commit.dateCommit && dateFin >= commit.dateCommit){
+                                            person.commitAll.push(commit);
+                                            console.log(commit.dateCommit);
+                                        } else if(dateDebut <= commit.dateCommit && dateFin == ""){
+                                            person.commitAll.push(commit)
+                                            console.log(commit.dateCommit);
+                                        }
+                                    })
+                                })
+                            this.commitList.push(person);
+                            this.repositoryList = true;
+                            this.repositoryUserSelected = false;
                         })
                     })
-                }
-            }
+            })
+        },
+
+        getUserInfo: function () {
+            var selectedUser = this.selectedUser;
+            var selectedProjet = this.selectedProject;
+            var dateDebut = this.startDate;
+            var dateFin = this.endDate;
+            this.commitList = [];
+
+            axios({method: "GET", "url": "https://api.github.com/search/repositories?q=" + selectedProjet})
+                .then((result) => {
+                    this.repoList = result.data.items
+                    this.repoList.forEach(repo => {
+                        if (repo.owner.login === selectedUser) {
+                            var person = {
+                                login: repo.owner.login,
+                                url: repo.html_url,
+                                commitAll: []
+                            }
+                            axios({method: "GET", "url": "https://api.github.com/repos/" + repo.full_name + "/commits"})
+                                .then(result => {
+                                    result.data.forEach(data => {
+                                        var commit = {
+                                            dateCommit: data.commit.author.date,
+                                            message: data.commit.message,
+                                            commitUrl: data.html_url
+                                        }
+                                        if(dateDebut <= commit.dateCommit && dateFin >= commit.dateCommit){
+                                            person.commitAll.push(commit);
+                                            console.log(commit.dateCommit);
+                                        } else if(dateDebut <= commit.dateCommit && dateFin == ""){
+                                            person.commitAll.push(commit)
+                                            console.log(commit.dateCommit);
+                                        }
+                                    })
+                                })
+                            this.commitList.push(person);
+                            this.repositoryList = false;
+                            this.repositoryUserSelected = true;
+                        }
+                    })
+                })
+        },
+
+        filterDate: function () {
+
+        }
+    }
+
 });
 
