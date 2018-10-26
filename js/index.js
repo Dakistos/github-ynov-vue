@@ -47,7 +47,7 @@ var app = new Vue({
         repositoryUserSelected: false,
         startDate: '',
         endDate: '',
-        repoList: []
+        repoList: [],
     },
 
     // filter: {
