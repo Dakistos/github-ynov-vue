@@ -70,6 +70,7 @@ var app = new Vue({
             }
         },
 
+
         getAllUser: function () {
             var dateDebut = this.startDate;
             var dateFin = this.endDate;
@@ -98,16 +99,15 @@ var app = new Vue({
                                         };
                                         if(dateDebut <= commit.dateCommit && dateFin >= commit.dateCommit){
                                             person.commitAll.push(commit);
-                                            console.log(commit.dateCommit);
                                         } else if(dateDebut <= commit.dateCommit && dateFin == ""){
                                             person.commitAll.push(commit)
-                                            console.log(commit.dateCommit);
                                         }
                                     })
                                 })
+                            // axios({method: 'GET', url:"\"https://github.com/repos/octokit.rb/blob/master/README.md"})
                             this.commitList.push(person);
-                            this.repositoryList = true;
-                            this.repositoryUserSelected = false;
+                            // this.repositoryList = true;
+                            // this.repositoryUserSelected = false;
                         })
                     })
             })
