@@ -13,11 +13,7 @@
   },
   "dependencies": {
     "express": "^4.16.4",
-    "moment": {
-      "integrity": "sha1-PCV/mDn8DpP/UxSWMiOeuQeD/2Y=",
-      "resolved": "https://registry.npmjs.org/moment/-/moment-2.22.2.tgz",
-      "version": "2.22.2"
-    },
+    "moment": "^2.22.2",
     "vue": {
       "integrity": "sha512-mFbcWoDIJi0w0Za4emyLiW72Jae0yjANHbCVquMKijcavBGypqlF7zHRgMa5k4sesdv7hv2rB4JPdZfR+TPfhQ==",
       "resolved": "https://registry.npmjs.org/vue/-/vue-2.5.17.tgz",

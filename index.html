@@ -2,10 +2,11 @@
 <html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <head>
     <meta  charset="UTF-8">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -24,7 +25,7 @@
                     <label class="input-group-text" for="inputGroupSelect01">Compte</label>
                 </div>
                 <select class="custom-select" id="inputGroupSelect02" v-model="selectedUser">
-                    <option selected>Tous</option>
+                    <option value="Tous">Tous</option>
                     <option v-for="user in userList" >{{user}}</option>
                 </select>
             </div>
@@ -32,11 +33,11 @@
                 <input type="date" class="form-control" v-model="startDate" placeholder="Date début">
                 <input type="date" class="form-control" v-model="endDate" placeholder="Date fin">
             </div>
-            <button class="btn btn-success" v-on:click="getRepo()">Valider</button>
+            <button class="btn btn-success" v-on:click="getAllUser()">Valider</button>
         </div>
 
-        <div class="card" v-if="repositoryList">
-            <div class="class" v-for="owner in commitList">
+        <div class="class" v-if="repositoryList">
+            <div class="card" v-for="owner in commitList">
                 <div class="card-header text-white bg-secondary">
                     <h5>Auteur : {{owner.login}}</h5>
                     <a :href="owner.url" target="_blank" class="btn btn-primary">Lien du projet</a>
@@ -52,7 +53,7 @@
                         <tbody>
                         <tr v-for="commit in owner.commitAll">
                             <td>{{commit.message}}</td>
-                            <td>{{commit.dateCommit}}</td>
+                            <td>{{ commit.newDateCommit }}</td>
                             <td><a :href="commit.commitUrl" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
                         </tr>
                         </tbody>
@@ -61,36 +62,34 @@
             </div>
         </div>
 
-            <div class="card" v-if="repositoryUserSelected">
-                <div class="class" v-for="owner in commitList">
-                    <div class="card-header text-white bg-secondary justify-content-between">
-                        <h5>Auteur : {{owner.login}}</h5>
-                        <a :href="owner.url" target="_blank" class="btn btn-primary">Lien du projet</a>
-                    </div>
-                    <div class="card-body">
-                        <!--<h5 class="card-title" v-for="projet in projects">Commits pour : {{projet.name}}</h5>-->
-                        <table class="table table-responsive-sm table-striped">
-                            <thead>
-                            <th style="width: 40%">Message</th>
-                            <th style="width: 40%">Date</th>
-                            <th style="width: 20%">Lien du commit</th>
-                            </thead>
-                            <tbody>
-                            <tr v-for="commit in owner.commitAll">
-                                <td>{{commit.message}}</td>
-                                <td>{{commit.dateCommit}}</td>
-                                <td><a :href="commit.commitUrl" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+        <div class="class" v-if="repositoryUserSelected">
+            <div class="card" v-for="owner in commitList">
+                <div class="card-header text-white bg-secondary justify-content-between">
+                    <h5>Auteur : {{owner.login}}</h5>
+                    <a :href="owner.url" target="_blank" class="btn btn-primary">Lien du projet</a>
                 </div>
-
+                <div class="card-body">
+                    <!--<h5 class="card-title" v-for="projet in projects">Commits pour : {{projet.name}}</h5>-->
+                    <table class="table table-responsive-sm table-striped">
+                        <thead>
+                        <th style="width: 40%">Message</th>
+                        <th style="width: 40%">Date</th>
+                        <th style="width: 20%">Lien du commit</th>
+                        </thead>
+                        <tbody>
+                        <tr v-for="commit in owner.commitAll">
+                            <td>{{commit.message}}</td>
+                            <td>{{commit.newDateCommit}}</td>
+                            <td><a :href="commit.commitUrl" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+        </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/locale/fr.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script>
     <script src="js/index.js"></script>
 </body>
 </html>
