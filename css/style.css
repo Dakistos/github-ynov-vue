@@ -2,8 +2,8 @@
     margin: 20px auto;
     width: 50%;
 }
-.class{
-    margin-bottom: 20px;
+.card{
+    margin-bottom: 25px;
 }
 .card-header h5{
     display: inline-block;
@@ -12,4 +12,11 @@
 
 .card-header a{
     float: right;
+}
+
+@media (max-width: 640px){
+    .filter{
+        margin: 20px auto;
+        width: 80%;
+    }
 }

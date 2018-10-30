@@ -11,5 +11,9 @@
     <orderEntry type="library" name="axios" level="application" />
     <orderEntry type="library" name="vue" level="application" />
     <orderEntry type="library" name="fr" level="application" />
+    <orderEntry type="library" name="axios" level="application" />
+    <orderEntry type="library" name="vue" level="application" />
+    <orderEntry type="library" name="fr" level="application" />
+    <orderEntry type="library" name="moment" level="application" />
   </component>
 </module>
