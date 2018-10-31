@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/marked@0.3.6"></script>
 </head>
 
 <body>
@@ -36,55 +37,27 @@
             <button class="btn btn-success" v-on:click="getAllUser()">Valider</button>
         </div>
 
-        <div class="class" v-if="repositoryList">
-            <div class="card" v-for="owner in commitList">
-                <div class="card-header text-white bg-secondary">
-                    <h5>Auteur : {{owner.login}}</h5>
-                    <a :href="owner.url" target="_blank" class="btn btn-primary">Lien du projet</a>
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title" ></h5>
-                    <table class="table table-responsive-sm table-striped">
-                        <thead>
-                        <th style="width: 40%">Message</th>
-                        <th style="width: 40%">Date</th>
-                        <th style="width: 20%">Lien du commit</th>
-                        </thead>
-                        <tbody>
-                        <tr v-for="commit in owner.commitAll">
-                            <td>{{commit.message}}</td>
-                            <td>{{ commit.newDateCommit }}</td>
-                            <td><a :href="commit.commitUrl" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="card" v-for="owner in commitList">
+            <div class="card-header text-white bg-secondary">
+                <h5>Auteur : {{owner.login}}</h5>
+                <a :href="owner.url" target="_blank" class="btn btn-primary">Lien du projet</a>
             </div>
-        </div>
-
-        <div class="class" v-if="repositoryUserSelected">
-            <div class="card" v-for="owner in commitList">
-                <div class="card-header text-white bg-secondary justify-content-between">
-                    <h5>Auteur : {{owner.login}}</h5>
-                    <a :href="owner.url" target="_blank" class="btn btn-primary">Lien du projet</a>
-                </div>
-                <div class="card-body">
-                    <!--<h5 class="card-title" v-for="projet in projects">Commits pour : {{projet.name}}</h5>-->
-                    <table class="table table-responsive-sm table-striped">
-                        <thead>
-                        <th style="width: 40%">Message</th>
-                        <th style="width: 40%">Date</th>
-                        <th style="width: 20%">Lien du commit</th>
-                        </thead>
-                        <tbody>
-                        <tr v-for="commit in owner.commitAll">
-                            <td>{{commit.message}}</td>
-                            <td>{{commit.newDateCommit}}</td>
-                            <td><a :href="commit.commitUrl" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="card-body">
+                <h5 class="card-title">Accès au readme : <a :href="owner.readme" target="_blank" class="btn" title="Accès readme"><img src="img/readme.png" width="35px" height="35px"></a> </h5>
+                <table class="table table-responsive-sm table-striped">
+                    <thead>
+                    <th style="width: 40%">Message</th>
+                    <th style="width: 40%">Date</th>
+                    <th style="width: 20%">Lien du commit</th>
+                    </thead>
+                    <tbody>
+                    <tr v-for="commit in owner.commitAll">
+                        <td>{{commit.message}}</td>
+                        <td>{{ commit.newDateCommit }}</td>
+                        <td><a :href="commit.commitUrl" target="_blank" class="btn" title="Lien du commit"><img src="img/commit-logo.png" width="35px" height="45px"></a></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
