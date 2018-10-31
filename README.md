@@ -1,4 +1,4 @@
-Démo du projet : https://mdupont.000webhostapp.com/
+Démo du projet : https://mdupont-github.000webhostapp.com/
 
 # But de l'application :
 Cette application créée dans le cadre d'un cours, a pour but de centraliser les différents répertoires github des étudiants afin de faciliter la consultation de ceux-ci pour le professeur.
