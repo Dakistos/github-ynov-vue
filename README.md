@@ -14,5 +14,5 @@ Cette application créée dans le cadre d'un cours, a pour but de centraliser le
 # Développement :
 
 - Réalisé avec le framework Javascript "VueJS" pour récupérer les différents répo via l'API Github.
-- Utilisation du framework CSS Boostrap pour l'interface (UI) du projet.
+- Utilisation du framework CSS Bootstrap pour l'interface (UI) du projet.
 
